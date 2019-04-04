@@ -18,16 +18,17 @@ namespace PBL2.Models
         public int Fk_Movel { get; set; }
         public Movel Movel { get; set; }
         public virtual ICollection<Funcionario> Funcionarios { get; set; }
-        public virtual ICollection<Movel> Moveis{ get; set; }
+        public virtual ICollection<Movel> Moveis { get; set; }
+        public double Valor { get; set; }
 
-    public bool mudastatusFuncionario()
-    {
-        if (Funcionario.Status== "Disponivel")
+        public bool mudastatusFuncionario()
         {
-            return true;
+            if (Funcionario.Status == "Disponivel")
+            {
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
         public bool mudastatusMovel()
         {
             if (Movel.Status == "solicitado")

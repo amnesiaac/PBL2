@@ -147,6 +147,14 @@
     <Compile Include="Migrations\201904032251214_[Funcionario].Designer.cs">
       <DependentUpon>201904032251214_[Funcionario].cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904042227018_[Venda_Movel].cs" />
+    <Compile Include="Migrations\201904042227018_[Venda_Movel].Designer.cs">
+      <DependentUpon>201904042227018_[Venda_Movel].cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904042339171_[caralho_denovoisso].cs" />
+    <Compile Include="Migrations\201904042339171_[caralho_denovoisso].Designer.cs">
+      <DependentUpon>201904042339171_[caralho_denovoisso].cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Funcionario.cs" />
     <Compile Include="Models\Movel.cs" />
@@ -228,6 +236,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904032251214_[Funcionario].resx">
       <DependentUpon>201904032251214_[Funcionario].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904042227018_[Venda_Movel].resx">
+      <DependentUpon>201904042227018_[Venda_Movel].cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904042339171_[caralho_denovoisso].resx">
+      <DependentUpon>201904042339171_[caralho_denovoisso].cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

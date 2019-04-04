@@ -17,11 +17,8 @@ namespace PBL2.Controllers
         // GET: Vendas
         public ActionResult Index()
         {
-            //var vendas = db.Vendas.Include(v => v.Funcionario);
-            //vendas = db.Vendas.Include(v => v.Movel);
-            var venda = db.Vendas.ToList().Where(venda3 => venda3.Funcionario.Status == "Disponivel");
-            var venda2 = venda.Where(venda4 => venda4.Movel.Status == "solicitado");
-            return View(venda2);
+            var vendas = db.Vendas.Include(v => v.Funcionario).Include(v => v.Movel);
+            return View(vendas.ToList());
         }
 
         // GET: Vendas/Details/5
@@ -60,25 +57,22 @@ namespace PBL2.Controllers
                 venda.Funcionario = funcionario;
                 Movel movel = db.Movels.Find(venda.Fk_Movel);
                 venda.Movel = movel;
-                if (venda.mudastatusFuncionario())
-                {
+                if (venda.mudastatusFuncionario()) {
                     db.Vendas.Add(venda);
                     db.SaveChanges();
-                    funcionario.Status = "Indisponivel";
+                    funcionario.Status = "indisponivel";
                     db.Entry(funcionario).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
                 }
                 if (venda.mudastatusMovel())
                 {
                     db.Vendas.Add(venda);
                     db.SaveChanges();
-                    movel.Status = "em construção";
+                    movel.Status = "Em construção";
                     db.Entry(movel).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
                 }
-
+                return RedirectToAction("Index");
             }
 
             ViewBag.Fk_Funcionario = new SelectList(db.Funcionarios, "Pk_Funcionario", "Nome", venda.Fk_Funcionario);
@@ -144,6 +138,22 @@ namespace PBL2.Controllers
             Venda venda = db.Vendas.Find(id);
             db.Vendas.Remove(venda);
             db.SaveChanges();
+            Funcionario funcionario = db.Funcionarios.Find(venda.Fk_Funcionario);
+            venda.Funcionario = funcionario;
+            Movel movel = db.Movels.Find(venda.Fk_Movel);
+            venda.Movel = movel;
+            if (!venda.mudastatusFuncionario())
+            {
+                funcionario.Status = "Disponivel";
+                db.Entry(funcionario).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            if (!venda.mudastatusMovel())
+            {
+                movel.Status = "Entregue";
+                db.Entry(movel).State = EntityState.Modified;
+                db.SaveChanges();
+                }
             return RedirectToAction("Index");
         }
 
