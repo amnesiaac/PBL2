@@ -17,22 +17,24 @@ namespace PBL2.Models
         [ForeignKey("Movel")]
         public int Fk_Movel { get; set; }
         public Movel Movel { get; set; }
-        public List <Funcionario> Funcionarios { get; set; }
+        public virtual ICollection<Funcionario> Funcionarios { get; set; }
+        public virtual ICollection<Movel> Moveis{ get; set; }
 
-        public void setstatusfuncionario()
+    public bool mudastatusFuncionario()
+    {
+        if (Funcionario.Status== "Disponivel")
         {
-            foreach (Funcionario F in Funcionarios)
-            {
-                if(Fk_Funcionario==F.Pk_Funcionario)
-                    F.Status = "Indisponivel";
-            }
-            }
-       
-        public Venda()
-        {
-            setstatusfuncionario();
-           
+            return true;
         }
-
+        return false;
+    }
+        public bool mudastatusMovel()
+        {
+            if (Movel.Status == "solicitado")
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

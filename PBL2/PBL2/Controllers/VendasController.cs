@@ -17,8 +17,11 @@ namespace PBL2.Controllers
         // GET: Vendas
         public ActionResult Index()
         {
-            var vendas = db.Vendas.Include(v => v.Funcionario).Include(v => v.Movel);
-            return View(db.Vendas.ToList().Where(venda => venda.Funcionario.Status == "Disponivel"));
+            //var vendas = db.Vendas.Include(v => v.Funcionario);
+            //vendas = db.Vendas.Include(v => v.Movel);
+            var venda = db.Vendas.ToList().Where(venda3 => venda3.Funcionario.Status == "Disponivel");
+            var venda2 = venda.Where(venda4 => venda4.Movel.Status == "solicitado");
+            return View(venda2);
         }
 
         // GET: Vendas/Details/5
@@ -53,9 +56,29 @@ namespace PBL2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Vendas.Add(venda);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Funcionario funcionario = db.Funcionarios.Find(venda.Fk_Funcionario);
+                venda.Funcionario = funcionario;
+                Movel movel = db.Movels.Find(venda.Fk_Movel);
+                venda.Movel = movel;
+                if (venda.mudastatusFuncionario())
+                {
+                    db.Vendas.Add(venda);
+                    db.SaveChanges();
+                    funcionario.Status = "Indisponivel";
+                    db.Entry(funcionario).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                if (venda.mudastatusMovel())
+                {
+                    db.Vendas.Add(venda);
+                    db.SaveChanges();
+                    movel.Status = "em construção";
+                    db.Entry(movel).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
             }
 
             ViewBag.Fk_Funcionario = new SelectList(db.Funcionarios, "Pk_Funcionario", "Nome", venda.Fk_Funcionario);
